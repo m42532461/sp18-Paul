@@ -7,7 +7,9 @@ public class Percolation {
     public int size;
     public int row;
     private boolean[] open;
-
+/*
+Constructor
+ */
     public Percolation(int r) {                  // create N-by-N grid, with all sites initially blocked
         union = new WeightedQuickUnionUF(r*r);
         open = new boolean[r*r];
@@ -17,7 +19,9 @@ public class Percolation {
         this.row = r;
         this.size = 0;
     }
-    
+/*
+Open the space and the size of open site plus 1.
+ */
     public void open(int row, int col) {       // open the site (row, col) if it is not open already
         int position = xyTo1D(row, col);
         open[position] = true;
@@ -25,13 +29,18 @@ public class Percolation {
         checkNear(row, col);
         System.out.println("Open (" + row + ", " + col +")");
     }
-
+/*
+checkNear used to check if other spaces nearby are opened.
+And if true then connect them.
+ */
     public void checkNear (int row, int col) {
         if ((xyTo1D(row, col) + this.row) < (row * row - 1) && (isOpen(row+1, col))) {
             union.union(xyTo1D(row, col), xyTo1D(row+1, col));
         }
     }
-
+/*
+xyTo1D transfer the 2D coordinate to 1D and return the number.
+ */
     public int xyTo1D(int row, int col) {
         return row * this.row + col;
     }
