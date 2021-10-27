@@ -7,9 +7,9 @@ public class Percolation {
     public int size;
     public int row;
     public boolean[] open;
-/*
-Constructor
- */
+    /*
+    Constructor
+     */
     public Percolation(int r) {                  // create N-by-N grid, with all sites initially blocked
         if (r <= 0) throw new IllegalArgumentException("Row and Column can not less or equal to zero");
         this.row = r;
@@ -27,9 +27,9 @@ Constructor
         }
 
     }
-/*
-Open the space and the size of open site plus 1.
- */
+    /*
+    Open the space and the size of open site plus 1.
+    */
     public void open(int row, int col) {       // open the site (row, col) if it is not open already
         if (!validate(row, col)) throw new IndexOutOfBoundsException("Out of bounds !");
         int position = xyTo1D(row, col);
@@ -38,10 +38,10 @@ Open the space and the size of open site plus 1.
         checkNear(row, col);
         System.out.println("Open (" + row + ", " + col +")");
     }
-/*
-checkNear used to check if other spaces nearby are opened.
-And if true then connect them.
- */
+    /*
+    checkNear used to check if other spaces nearby are opened.
+    And if true then connect them.
+    */
     public void checkNear (int row, int col) {
         int center = xyTo1D(row, col);
         int top = xyTo1D(row - 1, col);
@@ -73,9 +73,9 @@ And if true then connect them.
             }
         }
     }
-/*
-xyTo1D transfer the 2D coordinate to 1D and return the number.
- */
+    /*
+    xyTo1D transfer the 2D coordinate to 1D and return the number.
+    */
     public int xyTo1D(int row, int col) {
         return row * this.row + col;
     }
@@ -84,7 +84,6 @@ xyTo1D transfer the 2D coordinate to 1D and return the number.
     **/
     public boolean isOpen(int row, int col) {
         if (!validate(row, col)) throw new IndexOutOfBoundsException("Out of bounds !");
-        System.out.println("(" + row + ", " + col +") is open");
         return open[xyTo1D(row, col)];
     }
     /*
@@ -92,12 +91,10 @@ xyTo1D transfer the 2D coordinate to 1D and return the number.
     **/
     public boolean isFull(int row, int col) {
         if (!validate(row, col)) throw new IndexOutOfBoundsException("Out of bounds !");
-        for (int i = 0; i < this.row; i++) {
-            if (union.connected(xyTo1D(0, i), xyTo1D(row, col))) {
-                System.out.println("(" + row + ", " + col +") is full");
-                return true;
-            }
+        if (union.connected(0, xyTo1D(row, col)) && isOpen(row, col)) {
+            return true;
         }
+
         return false;
     }
 
@@ -115,20 +112,10 @@ xyTo1D transfer the 2D coordinate to 1D and return the number.
     does the system percolate?
      */
     public boolean percolates() {
-//        for (int i = 0; i < this.row; i++) {
-//            for (int j = 0; j < this.row; j++) {
-//                if (union.connected(xyTo1D(0, i), xyTo1D(this.row - 1, j))) {
-//                    System.out.println("Percolated!!");
-//                    return true;
-//                }
-//            }
-//        }
         return (union.connected(0, xyTo1D(this.row - 1,this.row - 1)));
-//        return false;
     }
     public static void main(String[] args) {
         Percolation a = new Percolation(5);
-//        a.open(0,1);
         a.open(1,1);
         a.open(2,1);
         a.open(3,1);
@@ -147,10 +134,6 @@ xyTo1D transfer the 2D coordinate to 1D and return the number.
         a.isFull(2,1);
         a.isFull(3,1);
         a.isFull(4,1);
-
-//        a.open(4,2);
-//        a.open(4,3);
-//        a.open(4,4);
         System.out.println(a.union.connected(a.xyTo1D(0,0), a.xyTo1D(1,0)));
         System.out.println(a.percolates());
         System.out.println(a.numberOfOpenSites());
