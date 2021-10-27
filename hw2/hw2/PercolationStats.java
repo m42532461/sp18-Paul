@@ -5,6 +5,9 @@ public class PercolationStats {
     private int T;
     private double[] openSiteFractions;
     private double sum;
+    private double mean;
+    private double stddev;
+
 
     // perform T independent experiments on an N-by-N grid
     public PercolationStats(int N, int T, PercolationFactory pf) {
@@ -28,33 +31,39 @@ public class PercolationStats {
     }
     public double calSum() {
         for (double i : openSiteFractions) {
-            sum += i;
+            this.sum += i;
         }
-        return sum;
+        return this.sum;
     }
 
     /*
     sample mean of percolation threshold
      */
     public double mean() {
+        this.mean = this.sum / T;
         return  calSum() / T;
     }
     /*
     sample standard deviation of percolation threshold
      */
     public double stddev(){
-        return 0;
+        double cal = 0;
+        for (double i : openSiteFractions) {
+            cal += (i - this.mean) * (i - this.mean);
+        }
+        this.stddev = Math.sqrt(cal / (this.T -1));
+        return this.stddev;
     }
     /*
     low endpoint of 95% confidence interval
      */
     public double confidenceLow() {
-        return 0;
+        return (this.mean - 1.96 * this.stddev / Math.sqrt(this.T));
     }
     /*
     high endpoint of 95% confidence interval
      */
     public double confidenceHigh() {
-        return 0;
+        return (this.mean + 1.96 * this.stddev / Math.sqrt(this.T));
     }
 }
