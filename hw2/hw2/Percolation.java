@@ -6,7 +6,7 @@ public class Percolation {
     public WeightedQuickUnionUF union;
     public int size;
     public int row;
-    private boolean[] open;
+    public boolean[] open;
 /*
 Constructor
  */
