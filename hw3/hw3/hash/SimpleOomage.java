@@ -14,13 +14,15 @@ public class SimpleOomage implements Oomage {
 
     @Override
     public boolean equals(Object o) {
-        // TODO: Write this method.
-        return false;
+        if (o == this) return true;
+        if (o == null) return false;
+        if (o.getClass() != this.getClass()) return false;
+        SimpleOomage that = (SimpleOomage) o;
+        return (this.red == that.red) && (this.green == that.green) && (this.blue == that.blue);
     }
 
-    /* Uncomment this method after you've written
-       equals and failed the testHashCodeAndEqualsConsistency
-       test.
+
+    /*
     @Override
     public int hashCode() {
         if (!USE_PERFECT_HASH) {
