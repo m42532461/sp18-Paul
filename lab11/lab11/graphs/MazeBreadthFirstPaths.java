@@ -12,7 +12,11 @@ public class MazeBreadthFirstPaths extends MazeExplorer {
 
     public MazeBreadthFirstPaths(Maze m, int sourceX, int sourceY, int targetX, int targetY) {
         super(m);
-        // Add more variables here!
+        maze = m;
+        int s = maze.xyTo1D(sourceX, sourceY);
+        int t = maze.xyTo1D(targetX, targetY);
+        distTo[s] = 0;
+        edgeTo[s] = s;
     }
 
     /** Conducts a breadth first search of the maze starting at the source. */
