@@ -4,8 +4,8 @@ import edu.princeton.cs.algs4.MinPQ;
 import java.util.*;
 
 public class Solver {
-    private WorldState initial;
-    private List<WorldState> solution;
+//    private WorldState initial;
+    private List<WorldState> solution = new ArrayList<>();
     private Map<WorldState, Integer> dist = new HashMap<>();
     public class SearchNode {
         private WorldState state;
@@ -43,11 +43,10 @@ public class Solver {
     puzzle using the A* algorithm. Assumes a solution exists.
     */
     public Solver(WorldState initial){
-        this.initial = initial;
+//        this.initial = initial;
         SearchNode currentNode = new SearchNode(initial, 0, null);
         MinPQ<SearchNode> pq = new MinPQ(new NodeComparator());
         pq.insert(currentNode);
-        this.solution = new ArrayList<>();
         while (!pq.isEmpty()) {
             currentNode = pq.delMin();
             if (currentNode.state.isGoal()) { break; }
