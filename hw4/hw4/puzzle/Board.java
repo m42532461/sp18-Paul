@@ -5,17 +5,17 @@ import edu.princeton.cs.algs4.Queue;
 public class Board implements WorldState{
     private final int BLANK = 0;
     private int[][] tiles;
-    private int row;
+    private int N;
     private int col;
     /*
     Board(tiles): Constructs a board from an N-by-N array of tiles where
               tiles[i][j] = tile at row i, column j
     */
     public Board(int[][] tiles) {
-        this.row = tiles.length;
+        this.N = tiles.length;
         this.col = tiles[0].length;
-        this.tiles = new int[row][col];
-        for (int i = 0; i < row; i++) {
+        this.tiles = new int[N][col];
+        for (int i = 0; i < N; i++) {
             for (int j = 0; j < col; j++) {
                 this.tiles[i][j] = tiles [i][j];
             }
@@ -26,7 +26,7 @@ public class Board implements WorldState{
      */
     public int hamming(){
         int sum = 0;
-        for (int i = 0; i < row; i++) {
+        for (int i = 0; i < N; i++) {
             for (int j = 0; j < col; j++) {
                 if (this.tiles[i][j] == BLANK) {
                     continue;
@@ -43,18 +43,52 @@ public class Board implements WorldState{
      */
     public int manhattan(){
         int sum = 0;
-        for (int i = 0; i < row; i++) {
-            for (int j = 0; j < col; j++) {
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
                 if (this.tiles[i][j] == BLANK) {
                     continue;
                 }
-                int row = this.tiles[i][j]-1 / this.row ;
-                int col = this.tiles[i][j]-1 % this.row ;
-                sum += row;
-                sum += col;
+                if (xyTo1D(i, j) != tileAt(i, j)) {
+                    sum += calDiff(i, j);
+                }
             }
         }
         return sum;
+    }
+    public int calDiff (int i, int j) {
+        int rightPosI = (tileAt(i, j) - 1) / N;
+        int rightPosJ = (tileAt(i, j) - 1) % N;
+        return Math.abs((rightPosI - i) + (rightPosJ - j));
+    }
+    private int xyTo1D (int i, int j) {
+        return i * N + j - 1;
+    }
+//    public int manhattan() {
+//        int res = 0;
+//        for (int i = 0; i < N; i++) {
+//            for (int j = 0; j < N; j++) {
+//                if (tiles[i][j] == BLANK) {
+//                    continue;
+//                }
+//                if (tiles[i][j] != xyTo1D(i, j)) {
+//                    res += getXYDiff(tiles[i][j], i, j);
+//                }
+//            }
+//        }
+//
+//        return res;
+//    }
+
+
+    private int[] intToXY(int s) {
+        return new int[] { (s - 1) / N, (s - 1) % N };
+    }
+    private int getXYDiff(int s, int i, int j) {
+        int res = 0;
+        int[] rightPos = intToXY(s);
+        res += rightPos[0] > i ? rightPos[0] - i : i - rightPos[0];
+        res += rightPos[1] > j ? rightPos[1] - j : j - rightPos[1];
+        return res;
     }
     /*
     equals(y):    Returns true if this board's tile values are the same
@@ -68,11 +102,11 @@ public class Board implements WorldState{
             return false;
         }
         Board b = (Board) y;
-        if (this.row != b.row) {
+        if (this.N != b.N) {
             return false;
         }
-        for (int i = 0; i < row; i++) {
-            for (int j = 0; j < row; j++) {
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
                 if (this.tiles[i][j] != b.tiles[i][j]) {
                     return false;
                 }
@@ -155,14 +189,14 @@ public class Board implements WorldState{
     size():       Returns the board size N
      */
     public int size() {
-        return row;
+        return N;
     }
 
     /*
     tileAt(i, j): Returns value of tile at row i, column j (or 0 if blank)
      */
     public int tileAt(int i, int j) {
-        if (i < 0 || i >= row || j < 0 || j >= row) {
+        if (i < 0 || i >= N || j < 0 || j >= N) {
             throw new IndexOutOfBoundsException();
         }
         return tiles[i][j];
