@@ -26,11 +26,6 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
         this.clear();
     }
 
-    public MyHashMap(int size) {
-        buckets = new ArrayMap[size];
-        this.clear();
-    }
-
     /* Removes all of the mappings from this map. */
     @Override
     public void clear() {
@@ -59,7 +54,6 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     @Override
     public V get(K key) {
         throw new UnsupportedOperationException();
-
     }
 
     /* Associates the specified value with the specified key in this map. */
