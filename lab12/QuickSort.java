@@ -63,6 +63,16 @@ public class QuickSort {
     public static <Item extends Comparable> Queue<Item> quickSort(
             Queue<Item> items) {
         // Your code here!
+        if (items.size() > 1){
+            Queue less = new Queue();
+            Queue greater = new Queue();
+            Queue equal = new Queue();
+            partition(items, getRandomItem(items), less, equal, greater);
+            less = quickSort(less);
+            greater = quickSort(greater);
+            items = catenate(less, equal);
+            items = catenate(items, greater);
+        }
         return items;
     }
 
@@ -73,6 +83,14 @@ public class QuickSort {
         students.enqueue("Ethan");
         students.enqueue("Paul");
         students.enqueue("Bob");
+        students.enqueue("Katelin");
+        students.enqueue("Cindy");
+        students.enqueue("Frank");
+        students.enqueue("Gina");
+        students.enqueue("Hank");
+        students.enqueue("Ivan");
+        students.enqueue("Jason");
+
         System.out.println(students);
         System.out.println(quickSort(students));
     }
