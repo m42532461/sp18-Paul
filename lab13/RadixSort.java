@@ -1,3 +1,8 @@
+import edu.princeton.cs.algs4.Queue;
+
+import java.util.Arrays;
+import java.util.Stack;
+
 /**
  * Class for doing Radix sort
  *
@@ -17,7 +22,15 @@ public class RadixSort {
      */
     public static String[] sort(String[] asciis) {
         // TODO: Implement LSD Sort
-        return null;
+        int max = Integer.MIN_VALUE;
+        for (String i : asciis) {
+            max = Math.max(max, i.length());
+        }
+        String[] res = Arrays.copyOf(asciis, asciis.length);
+        for (int i = 0; i < max; i++) {
+            sortHelperLSD(res, i);
+        }
+        return res;
     }
 
     /**
@@ -28,7 +41,37 @@ public class RadixSort {
      */
     private static void sortHelperLSD(String[] asciis, int index) {
         // Optional LSD helper method for required LSD radix sort
-        return;
+        int[] count = new int[256];
+        for (String item : asciis) {
+            int c = charAtDigit(item, index);
+            count[c]++;
+        }
+        int[] start = new int[256];
+        int pos = 0;
+        for (int i = 0; i < 256; i++) {
+            start[i] = pos;
+            pos += count[i];
+        }
+
+        String[] sorted = new String[asciis.length];
+        for (int i = 0; i < asciis.length; i++) {
+            String item = asciis[i];
+            int c = charAtDigit(item, index);
+            int place = start[c];
+            sorted[place] = item;
+            start[c]++;
+        }
+
+        for (int i = 0; i < asciis.length; i++) {
+            asciis[i] = sorted[i];
+        }
+    }
+
+    private static int charAtDigit (String item, int index) {
+        if (item.length() < index + 1 || index < 0) {
+            return 0;
+        }
+        return item.charAt(item.length() - index - 1);
     }
 
     /**
@@ -43,6 +86,30 @@ public class RadixSort {
      **/
     private static void sortHelperMSD(String[] asciis, int start, int end, int index) {
         // Optional MSD helper method for optional MSD radix sort
+
         return;
+    }
+
+    public static void main(String[] args) {
+        String[] someSymbol = {"abc", "df)", "fvs", "efs", "swe", "!vx", "e@c", "pnh", "0xa"};
+        String[] nonSymbol = {"abc", "dfv", "fvs", "efs", "swe", "evx", "ewc", "pnh", "cxa"};
+
+        for(String i : nonSymbol) {
+            System.out.println(i);
+        }
+        String[]sorted = sort(nonSymbol);
+        System.out.println("---------------------------------");
+        for(String i : sorted) {
+            System.out.println(i);
+        }
+
+        for(String i : someSymbol) {
+            System.out.println(i);
+        }
+        sorted = sort(someSymbol);
+        System.out.println("---------------------------------");
+        for(String i : sorted) {
+            System.out.println(i);
+        }
     }
 }
